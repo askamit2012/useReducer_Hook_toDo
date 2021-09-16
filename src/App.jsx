@@ -1,4 +1,4 @@
-import React, {useState, useReducer} from 'react'
+import React, {useState, useReducer, useRef, useEffect} from 'react'
 import './App.css'
 
 const initialState = {
@@ -81,7 +81,12 @@ function reducerFn(state= initialState, action ) {
 function App() {
   const [taskVal, setTaskVal] = useState('');
   const [newTaskVal, setNewTaskVal] = useState('');
-  const [state, dispatch] = useReducer(reducerFn, initialState)
+  const [state, dispatch] = useReducer(reducerFn, initialState);
+  const taskInputRef = useRef(null);
+
+  useEffect(() => {
+    taskInputRef.current.focus()
+  }, [])
   
   function addTaskBtnHandler() {
     dispatch({
@@ -140,7 +145,7 @@ function App() {
   return (
     <div className="App">
       <h4>toDo using useReducer Hook</h4>
-      <input onChange={e => setTaskVal(e.target.value)} value={taskVal} placeholder="Add a Task .....!" />
+      <input onChange={e => setTaskVal(e.target.value)} value={taskVal} placeholder="Add a Task .....!" ref={taskInputRef} />
       <button onClick={addTaskBtnHandler}>Add Task</button>
       {
         state.taskList.map((task, index) => task.isEditable ?
